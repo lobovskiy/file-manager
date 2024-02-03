@@ -1,0 +1,28 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "Node.js file manager (implementation of the RS School assignment https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/file-manager/score.md)",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lobovskiy/file-manager.git"
+  },
+  "keywords": [
+    "nodejs",
+    "rsschool",
+    "lobovskiy"
+  ],
+  "author": "lobovskiy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lobovskiy/file-manager/issues"
+  },
+  "homepage": "https://github.com/lobovskiy/file-manager#readme"
+}
