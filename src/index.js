@@ -1,4 +1,4 @@
-import FileManager from './components/FileManager.js';
+import FileManager from './components/FileManager/index.js';
 
 
 const { stdin, stdout, argv } = process;

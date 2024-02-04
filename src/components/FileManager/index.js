@@ -1,12 +1,12 @@
 import * as readline from 'node:readline';
 import { EOL } from 'node:os';
 
-import { parseExecArgs } from '../utils.js';
+import { parseExecArgs } from './utils.js';
 import {
   EXEC_ARG_PARAMS,
   EXEC_ARGS,
   MESSAGES, USER_INTERFACE_PROMPT,
-} from '../consts.js';
+} from '../../consts.js';
 
 
 export default class FileManager {
