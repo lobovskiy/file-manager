@@ -1,6 +1,7 @@
 import * as readline from 'node:readline';
 import { EOL } from 'node:os';
 
+import LocationService from '../../services/LocationSevice.js';
 import { parseExecArgs } from './utils.js';
 import {
   INPUT_PROMPT_STRING,
@@ -16,9 +17,8 @@ export default class FileManager {
    * @param {string[]} execArgs - app execution arguments
    * @param {Readable} input - readable stream of user input
    * @param {Writable} output - writable stream to print output in console
-   * @param {LocationService} locationService - service to operate with directories
    */
-  constructor(execArgs, input, output, locationService) {
+  constructor(execArgs, input, output) {
     this.execArgs = parseExecArgs(
       execArgs,
       EXEC_ARG_PARAMS.Prefix,
@@ -29,7 +29,7 @@ export default class FileManager {
       output,
       prompt: INPUT_PROMPT_STRING,
     });
-    this.locationService = locationService;
+    this.locationService = new LocationService();
 
     this.#addTerminationSignalListeners(this.userInterface);
   }
