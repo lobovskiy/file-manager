@@ -13,8 +13,7 @@ export function parseExecArgs(args, prefix, separator) {
       const indexOfSeparator = argString.indexOf(separator);
 
       if (indexOfSeparator) {
-        const argName = argString.slice(prefix.length,
-          indexOfSeparator);
+        const argName = argString.slice(prefix.length, indexOfSeparator);
 
         if (argName) {
           execArgs[argName] = argString.slice(indexOfSeparator + 1);
