@@ -37,7 +37,7 @@ export default class FileManager {
     if (username) {
       this.#welcome(username);
     } else {
-      const questionUsername = `${MESSAGES.UsernameRequired}${EOL}${EOL}${INPUT_PROMPT_STRING}`;
+      const questionUsername = `${MESSAGES.UsernameRequired}${EOL}${INPUT_PROMPT_STRING}`;
 
       this.userInterface.question(questionUsername, (username) => {
         this.execArgs[EXEC_ARGS.Username] = username;
