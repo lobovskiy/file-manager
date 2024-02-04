@@ -9,4 +9,7 @@ export default class LocationService {
   getCurrentLocation() {
     return this.location;
   }
+
+  goUp() {
+  }
 }
