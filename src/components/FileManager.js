@@ -1,44 +1,62 @@
 import * as readline from 'node:readline';
 import { EOL } from 'node:os';
 
-import { MESSAGES, USER_INTERFACE_PROMPT } from '../consts.js';
+import { parseExecArgs } from '../utils.js';
+import {
+  EXEC_ARG_PARAMS,
+  EXEC_ARGS,
+  MESSAGES, USER_INTERFACE_PROMPT,
+} from '../consts.js';
 
 
 export default class FileManager {
   /**
    * File Manager constructor
-   * @param {string[]} args - app execution arguments
+   * @param {string[]} execArgs - app execution arguments
    * @param {Readable} input - readable stream of user input
    * @param {Writable} output - writable stream to print output in console
    */
-  constructor(args, input, output) {
-    this.userInterface = readline.createInterface({ input, output });
-    this.appUserName = this.#parseUserNameFromArgs(args);
-
-    this.#configureUserInterface(this.userInterface);
-  }
-
-  welcome() {
-    this.userInterface.question(
-      `${MESSAGES.Welcome}${EOL}${USER_INTERFACE_PROMPT}`,
-      this.#handleUserInput.bind(this),
+  constructor(execArgs, input, output) {
+    this.userInterface = readline.createInterface(
+      { input, output, prompt: USER_INTERFACE_PROMPT });
+    this.execArgs = parseExecArgs(
+      execArgs,
+      EXEC_ARG_PARAMS.Prefix,
+      EXEC_ARG_PARAMS.Separator,
     );
-  }
 
-  #parseUserNameFromArgs(args) {
-    console.log('args: >> ', args);
-
-    return 'userName';
+    this.#addTerminationSignalListeners(this.userInterface);
   }
 
   /**
-   * Configure readline interface
-   * @param {Interface} userInterface - app execution arguments
+   * Starting app
    */
-  #configureUserInterface(userInterface) {
-    userInterface.on('line', this.#handleUserInput.bind(this));
+  start() {
+    const username = this.execArgs[EXEC_ARGS.Username];
 
-    this.#addTerminationSignalListeners(userInterface);
+    if (username) {
+      this.#welcome(username);
+    } else {
+      const questionUsername = `${MESSAGES.UsernameRequired}${EOL}${USER_INTERFACE_PROMPT}`;
+
+      this.userInterface.question(questionUsername, (username) => {
+        this.execArgs[EXEC_ARGS.Username] = username;
+        this.#welcome(username);
+      });
+    }
+  }
+
+  /**
+   * Welcome user
+   * @param {string} username - app username
+   */
+  #welcome(username) {
+    const welcomeMessage = `Welcome to the File Manager, ${username}!`;
+    const questionWelcome = `${welcomeMessage}${EOL}${MESSAGES.WelcomeInstructions}${EOL}${USER_INTERFACE_PROMPT}`;
+
+    this.#configureUserInterface(this.userInterface);
+    this.userInterface.question(questionWelcome,
+      this.#handleUserCommand.bind(this));
   }
 
   /**
@@ -50,13 +68,20 @@ export default class FileManager {
       userInterface.on(signal, this.userInterface.close));
   }
 
-  #handleUserInput(command) {
+  /**
+   * Configure readline interface
+   * @param {Interface} userInterface - app execution arguments
+   */
+  #configureUserInterface(userInterface) {
+    userInterface.on('line', this.#handleUserCommand.bind(this));
+  }
+
+  #handleUserCommand(command) {
     if (command === '.exit') {
       this.userInterface.close();
     } else {
       console.log(command);
+      this.userInterface.prompt();
     }
-
-    this.userInterface.prompt();
   }
 }
