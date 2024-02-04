@@ -20,16 +20,8 @@ export default class FileManager {
    * @param {Writable} output - writable stream to print output in console
    */
   constructor(execArgs, input, output) {
-    this.execArgs = parseExecArgs(
-      execArgs,
-      EXEC_ARG_PARAMS.Prefix,
-      EXEC_ARG_PARAMS.Separator,
-    );
-    this.userInterface = readline.createInterface({
-      input,
-      output,
-      prompt: INPUT_PROMPT_STRING,
-    });
+    this.execArgs = parseExecArgs(execArgs, EXEC_ARG_PARAMS.Prefix, EXEC_ARG_PARAMS.Separator);
+    this.userInterface = readline.createInterface({ input, output, prompt: INPUT_PROMPT_STRING });
     this.locationService = new LocationService();
     this.fileService = new FileService(this.userInterface, this.locationService);
 
@@ -72,8 +64,7 @@ export default class FileManager {
    * @param {Interface} userInterface - app execution arguments
    */
   #addTerminationSignalListeners(userInterface) {
-    ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) =>
-      userInterface.on(signal, this.userInterface.close));
+    ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) => userInterface.on(signal, this.userInterface.close));
   }
 
   /**
