@@ -57,7 +57,7 @@ export default class FileManager {
     const questionWelcome = `${welcomeMessageLine}${currentLocationLine}${INPUT_PROMPT_STRING}`;
 
     this.#configureUserInterface(this.userInterface);
-    this.userInterface.question(questionWelcome, this.fileService.handleCommand.bind(this.fileService));
+    this.userInterface.question(questionWelcome, this.fileService.handleCommandInput.bind(this.fileService));
   }
 
   /**
@@ -73,6 +73,6 @@ export default class FileManager {
    * @param {Interface} userInterface - app execution arguments
    */
   #configureUserInterface(userInterface) {
-    userInterface.on('line', this.fileService.handleCommand.bind(this.fileService));
+    userInterface.on('line', this.fileService.handleCommandInput.bind(this.fileService));
   }
 }

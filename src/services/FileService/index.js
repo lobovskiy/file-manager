@@ -1,5 +1,5 @@
 import { MESSAGES } from '../../consts.js';
-import { COMMAND_ARG_PARAMS, COMMAND_MESSAGES, COMMANDS, COMMANDS_PARAMS_BY_COMMAND, EXIT_COMMAND } from './consts.js';
+import { COMMAND_ARG_PARAMS, COMMAND_MESSAGES, COMMANDS_PARAMS_BY_COMMAND, EXIT_COMMAND } from './consts.js';
 
 
 export default class FileService {
@@ -19,7 +19,7 @@ export default class FileService {
    * Command handler
    * @param {string} input - user input
    */
-  handleCommand(input) {
+  handleCommandInput(input) {
     const [command, ...args] = input.trimStart().trimEnd().split(COMMAND_ARG_PARAMS.Separator);
 
     if (command === EXIT_COMMAND) {
