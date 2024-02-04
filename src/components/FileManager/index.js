@@ -3,9 +3,10 @@ import { EOL } from 'node:os';
 
 import { parseExecArgs } from './utils.js';
 import {
+  INPUT_PROMPT_STRING,
   EXEC_ARG_PARAMS,
   EXEC_ARGS,
-  MESSAGES, USER_INTERFACE_PROMPT,
+  MESSAGES,
 } from '../../consts.js';
 
 
@@ -15,15 +16,20 @@ export default class FileManager {
    * @param {string[]} execArgs - app execution arguments
    * @param {Readable} input - readable stream of user input
    * @param {Writable} output - writable stream to print output in console
+   * @param {LocationService} locationService - service to operate with directories
    */
-  constructor(execArgs, input, output) {
-    this.userInterface = readline.createInterface(
-      { input, output, prompt: USER_INTERFACE_PROMPT });
+  constructor(execArgs, input, output, locationService) {
     this.execArgs = parseExecArgs(
       execArgs,
       EXEC_ARG_PARAMS.Prefix,
       EXEC_ARG_PARAMS.Separator,
     );
+    this.userInterface = readline.createInterface({
+      input,
+      output,
+      prompt: INPUT_PROMPT_STRING,
+    });
+    this.locationService = locationService;
 
     this.#addTerminationSignalListeners(this.userInterface);
   }
@@ -37,7 +43,7 @@ export default class FileManager {
     if (username) {
       this.#welcome(username);
     } else {
-      const questionUsername = `${MESSAGES.UsernameRequired}${EOL}${USER_INTERFACE_PROMPT}`;
+      const questionUsername = `${MESSAGES.UsernameRequired}${EOL}${EOL}${INPUT_PROMPT_STRING}`;
 
       this.userInterface.question(questionUsername, (username) => {
         this.execArgs[EXEC_ARGS.Username] = username;
@@ -51,8 +57,9 @@ export default class FileManager {
    * @param {string} username - app username
    */
   #welcome(username) {
-    const welcomeMessage = `Welcome to the File Manager, ${username}!`;
-    const questionWelcome = `${welcomeMessage}${EOL}${MESSAGES.WelcomeInstructions}${EOL}${USER_INTERFACE_PROMPT}`;
+    const welcomeMessageLine = `Welcome to the File Manager, ${username}!${EOL}`;
+    const currentLocationLine = `${MESSAGES.CurrentLocation} ${this.locationService.getCurrentLocation()}${EOL}`;
+    const questionWelcome = `${welcomeMessageLine}${currentLocationLine}${INPUT_PROMPT_STRING}`;
 
     this.#configureUserInterface(this.userInterface);
     this.userInterface.question(questionWelcome,
@@ -80,7 +87,10 @@ export default class FileManager {
     if (command === '.exit') {
       this.userInterface.close();
     } else {
+      const currentLocation = `${MESSAGES.CurrentLocation} ${this.locationService.getCurrentLocation()}`;
+
       console.log(command);
+      console.log(currentLocation);
       this.userInterface.prompt();
     }
   }

@@ -1,4 +1,4 @@
-export const USER_INTERFACE_PROMPT = '> ';
+export const INPUT_PROMPT_STRING = '> ';
 
 export const EXEC_ARG_PARAMS = {
   Separator: '=',
@@ -10,8 +10,8 @@ export const EXEC_ARGS = {
 };
 
 export const MESSAGES = {
-  WelcomeInstructions: 'Enter your command below:',
   UsernameRequired: 'Couldn\'t recognize your name from execution parameters. Please, enter your name below:',
+  CurrentLocation: 'You are currently in',
 };
 
 export const COMMANDS = {
