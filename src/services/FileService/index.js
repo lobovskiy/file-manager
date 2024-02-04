@@ -1,11 +1,11 @@
-import { MESSAGES } from '../consts.js';
+import { MESSAGES } from '../../consts.js';
 
 
 export default class FileService {
   /**
    * File Service constructor
-   * @param {Interface} userInterface - writable stream to print output in console
-   * @param {LocationService} locationService - writable stream to print output in console
+   * @param {Interface} userInterface - IO user interface
+   * @param {LocationService} locationService - service to operate with current location
    */
   constructor(userInterface, locationService) {
     this.userInterface = userInterface;

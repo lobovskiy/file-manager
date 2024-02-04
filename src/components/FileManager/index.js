@@ -2,7 +2,7 @@ import * as readline from 'node:readline';
 import { EOL } from 'node:os';
 
 import LocationService from '../../services/LocationSevice.js';
-import FileService from '../../services/FileService.js';
+import FileService from '../../services/FileService/index.js';
 import { parseExecArgs } from './utils.js';
 import {
   INPUT_PROMPT_STRING,
