@@ -6,10 +6,12 @@ export default class FileService {
    * File Service constructor
    * @param {Interface} userInterface - IO user interface
    * @param {LocationService} locationService - service to operate with current location
+   * @param {UserService} userService - service to operate with current location
    */
-  constructor(userInterface, locationService) {
+  constructor(userInterface, locationService, userService) {
     this.userInterface = userInterface;
     this.locationService = locationService;
+    this.userService = userService;
   }
 
   handleCommand(command) {

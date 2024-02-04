@@ -3,6 +3,7 @@ import { EOL } from 'node:os';
 
 import LocationService from '../../services/LocationSevice.js';
 import FileService from '../../services/FileService/index.js';
+import UserService from '../../services/UserService.js';
 import { parseExecArgs } from './utils.js';
 import {
   INPUT_PROMPT_STRING,
@@ -20,10 +21,12 @@ export default class FileManager {
    * @param {Writable} output - writable stream to print output in console
    */
   constructor(execArgs, input, output) {
-    this.execArgs = parseExecArgs(execArgs, EXEC_ARG_PARAMS.Prefix, EXEC_ARG_PARAMS.Separator);
+    const execArgsParsed = parseExecArgs(execArgs, EXEC_ARG_PARAMS.Prefix, EXEC_ARG_PARAMS.Separator);
+
     this.userInterface = readline.createInterface({ input, output, prompt: INPUT_PROMPT_STRING });
     this.locationService = new LocationService();
-    this.fileService = new FileService(this.userInterface, this.locationService);
+    this.userService = new UserService(execArgsParsed[EXEC_ARGS.Username]);
+    this.fileService = new FileService(this.userInterface, this.locationService, this.userService);
 
     this.#addTerminationSignalListeners(this.userInterface);
   }
@@ -32,7 +35,7 @@ export default class FileManager {
    * Starting app
    */
   start() {
-    const username = this.execArgs[EXEC_ARGS.Username];
+    const username = this.userService.getUsername();
 
     if (username) {
       this.#welcome(username);
@@ -40,7 +43,7 @@ export default class FileManager {
       const questionUsername = `${MESSAGES.UsernameRequired}${EOL}${INPUT_PROMPT_STRING}`;
 
       this.userInterface.question(questionUsername, (username) => {
-        this.execArgs[EXEC_ARGS.Username] = username;
+        this.userService.setUsername(username);
         this.#welcome(username);
       });
     }
