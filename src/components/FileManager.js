@@ -1,31 +1,29 @@
 import * as readline from 'node:readline';
 import { EOL } from 'node:os';
 
-import LocationService from '../../services/LocationSevice.js';
-import FileService from '../../services/FileService/index.js';
-import UserService from '../../services/UserService.js';
-import { parseExecArgs } from './utils.js';
+import LocationService from '../services/LocationSevice.js';
+import FileService from '../services/FileService/index.js';
+import UserService from '../services/UserService.js';
+import { parseExecArgs } from '../utils.js';
 import {
   INPUT_PROMPT_STRING,
   EXEC_ARG_PARAMS,
   EXEC_ARGS,
   MESSAGES,
-} from '../../consts.js';
+} from '../consts.js';
 
 
 export default class FileManager {
   /**
    * File Manager constructor
-   * @param {string[]} execArgs - app execution arguments
+   * @param {Record<string, string>} args - app execution arguments
    * @param {Readable} input - readable stream of user input
    * @param {Writable} output - writable stream to print output in console
    */
-  constructor(execArgs, input, output) {
-    const execArgsParsed = parseExecArgs(execArgs, EXEC_ARG_PARAMS.Prefix, EXEC_ARG_PARAMS.Separator);
-
+  constructor(args, input, output) {
     this.userInterface = readline.createInterface({ input, output, prompt: INPUT_PROMPT_STRING });
     this.locationService = new LocationService();
-    this.userService = new UserService(execArgsParsed[EXEC_ARGS.Username]);
+    this.userService = new UserService(args[EXEC_ARGS.Username]);
     this.fileService = new FileService(this.userInterface, this.locationService, this.userService);
 
     this.#addTerminationSignalListeners(this.userInterface);
