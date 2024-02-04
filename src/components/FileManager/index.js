@@ -2,6 +2,7 @@ import * as readline from 'node:readline';
 import { EOL } from 'node:os';
 
 import LocationService from '../../services/LocationSevice.js';
+import FileService from '../../services/FileService.js';
 import { parseExecArgs } from './utils.js';
 import {
   INPUT_PROMPT_STRING,
@@ -30,6 +31,7 @@ export default class FileManager {
       prompt: INPUT_PROMPT_STRING,
     });
     this.locationService = new LocationService();
+    this.fileService = new FileService(this.userInterface, this.locationService);
 
     this.#addTerminationSignalListeners(this.userInterface);
   }
@@ -62,8 +64,7 @@ export default class FileManager {
     const questionWelcome = `${welcomeMessageLine}${currentLocationLine}${INPUT_PROMPT_STRING}`;
 
     this.#configureUserInterface(this.userInterface);
-    this.userInterface.question(questionWelcome,
-      this.#handleUserCommand.bind(this));
+    this.userInterface.question(questionWelcome, this.fileService.handleCommand.bind(this));
   }
 
   /**
@@ -80,18 +81,6 @@ export default class FileManager {
    * @param {Interface} userInterface - app execution arguments
    */
   #configureUserInterface(userInterface) {
-    userInterface.on('line', this.#handleUserCommand.bind(this));
-  }
-
-  #handleUserCommand(command) {
-    if (command === '.exit') {
-      this.userInterface.close();
-    } else {
-      const currentLocation = `${MESSAGES.CurrentLocation} ${this.locationService.getCurrentLocation()}`;
-
-      console.log(command);
-      console.log(currentLocation);
-      this.userInterface.prompt();
-    }
+    userInterface.on('line', this.fileService.handleCommand.bind(this));
   }
 }
