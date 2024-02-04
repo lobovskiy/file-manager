@@ -38,7 +38,16 @@ export default class FileManager {
   #configureUserInterface(userInterface) {
     userInterface.on('line', this.#handleUserInput.bind(this));
 
-    this.#addTerminationSignalListeners();
+    this.#addTerminationSignalListeners(userInterface);
+  }
+
+  /**
+   * Add listeners for OS termination signals
+   * @param {Interface} userInterface - app execution arguments
+   */
+  #addTerminationSignalListeners(userInterface) {
+    ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) =>
+      userInterface.on(signal, this.userInterface.close));
   }
 
   #handleUserInput(command) {
@@ -49,10 +58,5 @@ export default class FileManager {
     }
 
     this.userInterface.prompt();
-  }
-
-  #addTerminationSignalListeners() {
-    ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((signal) =>
-      this.userInterface.on(signal, this.userInterface.close));
   }
 }
