@@ -4,10 +4,8 @@ import { EOL } from 'node:os';
 import LocationService from '../services/LocationSevice.js';
 import FileService from '../services/FileService/index.js';
 import UserService from '../services/UserService.js';
-import { parseExecArgs } from '../utils.js';
 import {
   INPUT_PROMPT_STRING,
-  EXEC_ARG_PARAMS,
   EXEC_ARGS,
   MESSAGES,
 } from '../consts.js';
