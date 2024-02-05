@@ -5,6 +5,7 @@ import { cat } from './commandFunctions/files/cat.js';
 import { add } from './commandFunctions/files/add.js';
 import { rn } from './commandFunctions/files/rn.js';
 import { cp } from './commandFunctions/files/cp.js';
+import { rm } from './commandFunctions/files/rm.js';
 
 
 export const COMMAND_ARG_PARAMS = {
@@ -23,6 +24,7 @@ export const COMMANDS = {
   Rn: 'rn',
   Cp: 'cp',
   Mv: 'mv',
+  Rm: 'rm',
 };
 
 export const COMMAND_FUNCTIONS_BY_COMMAND = {
@@ -33,6 +35,7 @@ export const COMMAND_FUNCTIONS_BY_COMMAND = {
   [COMMANDS.Add]: add,
   [COMMANDS.Cp]: cp,
   [COMMANDS.Mv]: (...args) => cp({ operation: 'move', ...args[0] }, ...args.slice(1)),
+  [COMMANDS.Rm]: rm,
 };
 
 export const COMMAND_MESSAGES = {
