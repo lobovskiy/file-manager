@@ -1,4 +1,5 @@
 import { homedir } from 'node:os';
+import * as path from 'node:path';
 
 
 export default class LocationService {
@@ -11,5 +12,11 @@ export default class LocationService {
   }
 
   goUp() {
+    const locationPathLevels = this.location.split(path.sep);
+
+    if (locationPathLevels.length > 1) {
+      locationPathLevels.pop();
+      this.location = locationPathLevels.join(path.sep);
+    }
   }
 }

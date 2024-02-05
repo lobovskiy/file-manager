@@ -1,5 +1,10 @@
 import { MESSAGES } from '../../consts.js';
-import { COMMAND_ARG_PARAMS, COMMAND_MESSAGES, COMMANDS_PARAMS_BY_COMMAND, EXIT_COMMAND } from './consts.js';
+import {
+  COMMAND_ARG_PARAMS,
+  COMMAND_FUNCTIONS_BY_COMMAND,
+  COMMAND_MESSAGES,
+  EXIT_COMMAND,
+} from './consts.js';
 
 
 export default class FileService {
@@ -25,8 +30,17 @@ export default class FileService {
     if (command === EXIT_COMMAND) {
       this.#checkExitCommandArgs(args);
     } else {
-      if (COMMANDS_PARAMS_BY_COMMAND[command]) {
-        this.#executeCommand(command, args);
+      const commandFunction = COMMAND_FUNCTIONS_BY_COMMAND[command];
+
+      if (commandFunction) {
+        const onInvalidArgs = () => this.#printMessageInvalidNumberOfArgs(command);
+        const params = {
+          locationService: this.locationService,
+          onInvalidArgs: onInvalidArgs.bind(this),
+          onFinish: this.#printResult.bind(this),
+        };
+
+        commandFunction(params, ...args);
       } else {
         console.log(COMMAND_MESSAGES.CommandNotFound);
         this.userInterface.prompt();
@@ -43,14 +57,18 @@ export default class FileService {
     }
   }
 
-  #executeCommand(command, args) {
-    console.log(123);
-    // console.log(COMMAND_MESSAGES.getInvalidNumberOfArgsMessageByCommand(command));
+  #printResult(result) {
+    if (result) {
+      console.log(result);
+    }
+
+    this.#printCurrentLocation();
     this.userInterface.prompt();
   }
 
   #printMessageInvalidNumberOfArgs(command) {
     console.log(COMMAND_MESSAGES.getInvalidNumberOfArgsMessageByCommand(command));
+    this.#printCurrentLocation();
     this.userInterface.prompt();
   }
 
