@@ -1,5 +1,6 @@
 import { up } from './commandFunctions/navigation/up.js';
 import { cd } from './commandFunctions/navigation/cd.js';
+import { list } from './commandFunctions/navigation/list.js';
 
 
 export const COMMAND_ARG_PARAMS = {
@@ -12,11 +13,13 @@ export const EXIT_COMMAND = '.exit';
 export const COMMANDS = {
   Up: 'up',
   Cd: 'cd',
+  Ls: 'ls',
 };
 
 export const COMMAND_FUNCTIONS_BY_COMMAND = {
   [COMMANDS.Up]: up,
   [COMMANDS.Cd]: cd,
+  [COMMANDS.Ls]: list,
 };
 
 export const COMMAND_MESSAGES = {

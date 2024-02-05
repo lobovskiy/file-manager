@@ -21,6 +21,33 @@ export default class LocationService {
     }
   }
 
+  async printDirContent() {
+    const entries = await fsPromises.readdir(this.location, { encoding: 'utf8' });
+    const directories = [];
+    const files = [];
+
+    for (const entry of entries) {
+      const entryPath = path.join(this.location, entry);
+      const entryObj = { Name: entry, Type: undefined };
+      const stat = await fsPromises.lstat(entryPath);
+
+      if (stat.isDirectory()) {
+        entryObj.Type = 'directory';
+        directories.push(entryObj);
+      }
+
+      if (stat.isFile()) {
+        entryObj.Type = 'file';
+        files.push(entryObj);
+      }
+    }
+
+    directories.sort((a, b) => a.Name - b.Name);
+    files.sort((a, b) => a.Name - b.Name);
+
+    console.table(directories.concat(files));
+  }
+
   async goToDirectory(pathToDirectory) {
     if (path.isAbsolute(pathToDirectory)) {
       await fsPromises.access(pathToDirectory);
@@ -28,7 +55,7 @@ export default class LocationService {
     } else if (pathToDirectory === '..') {
       this.goUp();
     } else {
-      const destPath = `${this.location}${path.sep}${pathToDirectory}`;
+      const destPath = path.join(this.location, pathToDirectory);
       const stat = await fsPromises.lstat(destPath);
 
       if (stat.isFile()) {
