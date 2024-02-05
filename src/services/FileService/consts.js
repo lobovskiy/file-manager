@@ -2,6 +2,7 @@ import { up } from './commandFunctions/navigation/up.js';
 import { cd } from './commandFunctions/navigation/cd.js';
 import { list } from './commandFunctions/navigation/list.js';
 import { cat } from './commandFunctions/files/cat.js';
+import { add } from './commandFunctions/files/add.js';
 
 
 export const COMMAND_ARG_PARAMS = {
@@ -16,6 +17,7 @@ export const COMMANDS = {
   Cd: 'cd',
   Ls: 'ls',
   Cat: 'cat',
+  Add: 'add',
 };
 
 export const COMMAND_FUNCTIONS_BY_COMMAND = {
@@ -23,6 +25,7 @@ export const COMMAND_FUNCTIONS_BY_COMMAND = {
   [COMMANDS.Cd]: cd,
   [COMMANDS.Ls]: list,
   [COMMANDS.Cat]: cat,
+  [COMMANDS.Add]: add,
 };
 
 export const COMMAND_MESSAGES = {

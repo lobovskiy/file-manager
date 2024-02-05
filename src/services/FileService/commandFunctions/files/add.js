@@ -11,35 +11,19 @@ import { getFilePath } from '../../utils.js';
  * @param {function(arg0?:string)} params.onFinish callback called when function execution is finished
  * @param {string[]} args arguments of the function call
  */
-export async function cat(params, ...args) {
+export async function add(params, ...args) {
   if (args.length !== 1) {
     params.onInvalidArgs();
 
     return;
   }
 
-  const { output, locationService, onFinish } = params;
+  const { locationService, onFinish } = params;
   const filePath = await getFilePath(args[0], locationService.getCurrentLocation());
 
-  try {
-    const stat = await fsPromises.lstat(filePath);
-
-    if (!stat.isFile()) {
-      throw new Error();
-    }
-  } catch {
-    onFinish('Error: Couldn\'t find this file');
-
-    return;
-  }
-
-  const readStream = fs.createReadStream(filePath, { encoding: 'utf8' });
-
-  readStream.on('end', () => {
-    onFinish();
-  }).on('error', () => {
-    onFinish('Error while reading file');
+  await fsPromises.appendFile(filePath, '').then(() => {
+    onFinish('File created');
+  }).catch(() => {
+    onFinish('Error: Couldn\'t create file by this path');
   });
-
-  readStream.pipe(output);
 }
