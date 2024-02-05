@@ -22,6 +22,7 @@ export const COMMANDS = {
   Add: 'add',
   Rn: 'rn',
   Cp: 'cp',
+  Mv: 'mv',
 };
 
 export const COMMAND_FUNCTIONS_BY_COMMAND = {
@@ -31,6 +32,7 @@ export const COMMAND_FUNCTIONS_BY_COMMAND = {
   [COMMANDS.Cat]: cat,
   [COMMANDS.Add]: add,
   [COMMANDS.Cp]: cp,
+  [COMMANDS.Mv]: (...args) => cp({ operation: 'move', ...args[0] }, ...args.slice(1)),
 };
 
 export const COMMAND_MESSAGES = {

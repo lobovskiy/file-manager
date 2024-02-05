@@ -6,7 +6,7 @@ import { getAbsolutePath } from '../../utils.js';
 
 /**
  * @param {Object} params Params of function call
- * @param {Writable} params.output user interface output writable stream
+ * @param {string} params.operation type of operation
  * @param {LocationService} params.locationService service to operate with current location
  * @param {Function} params.onInvalidArgs callback called when arguments of the function call are invalid
  * @param {function(arg0?:string)} params.onFinish callback called when function execution is finished
@@ -19,7 +19,7 @@ export async function cp(params, ...args) {
     return;
   }
 
-  const { output, locationService, onFinish } = params;
+  const { operation, locationService, onFinish } = params;
   const filePath = await getAbsolutePath(args[0], locationService.getCurrentLocation());
   const dirPath = await getAbsolutePath(args[1], locationService.getCurrentLocation());
 
@@ -50,16 +50,25 @@ export async function cp(params, ...args) {
 
   const readStream = fs.createReadStream(filePath, { encoding: 'utf8' });
   const writeStream = fs.createWriteStream(newFilePath, { encoding: 'utf8' });
+  const successMessage = (operation === 'move') ? 'File moved' : 'File copied';
+  const errorMessage = (operation === 'move') ? 'Error while moving file' : 'Error while copying file';
+
+  const checkMovingFile = async () => {
+    if (operation === 'move') {
+      await fsPromises.rm(filePath);
+    }
+    onFinish(successMessage);
+  };
 
   readStream.on('end', () => {
     writeStream.close();
-    onFinish('File copied');
+    checkMovingFile();
   }).on('error', () => {
-    onFinish('Error while copying file');
+    onFinish(errorMessage);
   });
 
   writeStream.on('error', () => {
-    onFinish('Error while copying file');
+    onFinish(errorMessage);
   });
 
   readStream.pipe(writeStream);
