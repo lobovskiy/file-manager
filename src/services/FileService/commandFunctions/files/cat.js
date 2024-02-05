@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import fsPromises from 'node:fs/promises';
-import { getFilePath } from '../../utils.js';
+import { getAbsolutePath } from '../../utils.js';
 
 
 /**
@@ -19,7 +19,7 @@ export async function cat(params, ...args) {
   }
 
   const { output, locationService, onFinish } = params;
-  const filePath = await getFilePath(args[0], locationService.getCurrentLocation());
+  const filePath = await getAbsolutePath(args[0], locationService.getCurrentLocation());
 
   try {
     const stat = await fsPromises.lstat(filePath);

@@ -1,5 +1,5 @@
 import fsPromises from 'node:fs/promises';
-import { getFilePath } from '../../utils.js';
+import { getAbsolutePath } from '../../utils.js';
 
 
 /**
@@ -18,7 +18,7 @@ export async function add(params, ...args) {
   }
 
   const { locationService, onFinish } = params;
-  const filePath = await getFilePath(args[0], locationService.getCurrentLocation());
+  const filePath = await getAbsolutePath(args[0], locationService.getCurrentLocation());
 
   await fsPromises.appendFile(filePath, '').then(() => {
     onFinish('File created');

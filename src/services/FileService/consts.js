@@ -4,6 +4,7 @@ import { list } from './commandFunctions/navigation/list.js';
 import { cat } from './commandFunctions/files/cat.js';
 import { add } from './commandFunctions/files/add.js';
 import { rn } from './commandFunctions/files/rename.js';
+import { cp } from './commandFunctions/files/cp.js';
 
 
 export const COMMAND_ARG_PARAMS = {
@@ -20,6 +21,7 @@ export const COMMANDS = {
   Cat: 'cat',
   Add: 'add',
   Rn: 'rn',
+  Cp: 'cp',
 };
 
 export const COMMAND_FUNCTIONS_BY_COMMAND = {
@@ -28,7 +30,7 @@ export const COMMAND_FUNCTIONS_BY_COMMAND = {
   [COMMANDS.Ls]: list,
   [COMMANDS.Cat]: cat,
   [COMMANDS.Add]: add,
-  [COMMANDS.Rn]: rn,
+  [COMMANDS.Cp]: cp,
 };
 
 export const COMMAND_MESSAGES = {

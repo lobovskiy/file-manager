@@ -2,7 +2,7 @@ import fsPromises from 'node:fs/promises';
 import path from 'node:path';
 
 
-export async function getFilePath(filePath, location) {
+export async function getAbsolutePath(filePath, location) {
   let absoluteFilePath;
 
   if (path.isAbsolute(filePath)) {

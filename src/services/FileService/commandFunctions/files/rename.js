@@ -1,5 +1,5 @@
 import fsPromises from 'node:fs/promises';
-import { getFilePath } from '../../utils.js';
+import { getAbsolutePath } from '../../utils.js';
 
 
 /**
@@ -18,8 +18,8 @@ export async function rn(params, ...args) {
   }
 
   const { locationService, onFinish } = params;
-  const oldFilePath = await getFilePath(args[0], locationService.getCurrentLocation());
-  const newFilePath = await getFilePath(args[1], locationService.getCurrentLocation());
+  const oldFilePath = await getAbsolutePath(args[0], locationService.getCurrentLocation());
+  const newFilePath = await getAbsolutePath(args[1], locationService.getCurrentLocation());
 
   const isFileExists = async (filePath) =>
     await fsPromises.access(filePath).then(() => true).catch(() => false);
