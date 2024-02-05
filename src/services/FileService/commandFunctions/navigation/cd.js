@@ -5,15 +5,19 @@
  * @param {function(arg0?:string)} params.onFinish callback called when function execution is finished
  * @param {string[]} args arguments of the function call
  */
-export function up(params, ...args) {
-  if (args.length) {
+export async function cd(params, ...args) {
+  if (args.length !== 1) {
     params.onInvalidArgs();
 
     return;
   }
 
   const { locationService, onFinish } = params;
+  const directoryPath = args[0];
 
-  locationService.goUp();
-  onFinish();
+  await locationService.goToDirectory(directoryPath).then(() => {
+    onFinish();
+  }).catch(() => {
+    onFinish('Error: Couldn\'t find this directory');
+  });
 }
