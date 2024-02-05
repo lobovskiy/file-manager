@@ -8,6 +8,7 @@ import { cp } from './commandFunctions/files/cp.js';
 import { rm } from './commandFunctions/files/rm.js';
 import { os } from './commandFunctions/system/os.js';
 import { hash } from './commandFunctions/hash/fileHash.js';
+import { compress } from './commandFunctions/compression/compress.js';
 
 
 export const COMMAND_ARG_PARAMS = {
@@ -29,6 +30,8 @@ export const COMMANDS = {
   Rm: 'rm',
   Os: 'os',
   Hash: 'hash',
+  Compress: 'compress',
+  Decompress: 'decompress',
 };
 
 export const COMMAND_FUNCTIONS_BY_COMMAND = {
@@ -42,6 +45,8 @@ export const COMMAND_FUNCTIONS_BY_COMMAND = {
   [COMMANDS.Rm]: rm,
   [COMMANDS.Os]: os,
   [COMMANDS.Hash]: hash,
+  [COMMANDS.Compress]: compress,
+  [COMMANDS.Decompress]: (...args) => compress({ operation: 'decompress', ...args[0] }, ...args.slice(1)),
 };
 
 export const COMMAND_MESSAGES = {

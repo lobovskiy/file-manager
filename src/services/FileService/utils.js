@@ -8,6 +8,13 @@ export async function getAbsolutePath(filePath, location) {
   if (path.isAbsolute(filePath)) {
     await fsPromises.access(filePath);
     absoluteFilePath = filePath;
+  } else if (filePath === '..') {
+    const locationPathLevels = location.split(path.sep);
+
+    if (locationPathLevels.length > 1) {
+      locationPathLevels.pop();
+      absoluteFilePath = locationPathLevels.join(path.sep);
+    }
   } else {
     absoluteFilePath = path.join(location, filePath);
   }
