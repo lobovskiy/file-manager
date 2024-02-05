@@ -58,20 +58,11 @@ export async function compress(params, ...args) {
     ? 'Error while decompressing file'
     : 'Error while compressing file';
 
-  // readStream.on('end', () => {
-  //   onFinish(successMessage);
-  // }).on('error', () => {
-  //   onFinish(errorMessage);
-  // });
-  //
-  // writeStream.on('error', () => {
-  //   onFinish(errorMessage);
-  // });
-
   const stream = readStream.pipe(operation).pipe(writeStream);
 
   stream.on('finish', () => {
     onFinish(successMessage);
+    writeStream.close();
   }).on('error', () => {
     onFinish(errorMessage);
   });
