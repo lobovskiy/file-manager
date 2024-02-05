@@ -24,7 +24,7 @@ export default class FileManager {
     this.userInterface = readline.createInterface({ input, output, prompt: INPUT_PROMPT_STRING });
     this.locationService = new LocationService();
     this.userService = new UserService(args[EXEC_ARGS.Username]);
-    this.fileService = new FileService(this.userInterface, this.locationService, this.userService);
+    this.fileService = new FileService(output, this.userInterface, this.locationService, this.userService);
 
     this.#addTerminationSignalListeners(this.userInterface);
   }

@@ -1,3 +1,4 @@
+import { EOL } from 'node:os';
 import { MESSAGES } from '../../consts.js';
 import {
   COMMAND_ARG_PARAMS,
@@ -10,11 +11,13 @@ import {
 export default class FileService {
   /**
    * File Service constructor
+   * @param {Writable} output user interface output writable stream
    * @param {Interface} userInterface - IO user interface
    * @param {LocationService} locationService - service to operate with current location
    * @param {UserService} userService - service to operate with current location
    */
-  constructor(userInterface, locationService, userService) {
+  constructor(output, userInterface, locationService, userService) {
+    this.output = output;
     this.userInterface = userInterface;
     this.locationService = locationService;
     this.userService = userService;
@@ -35,6 +38,7 @@ export default class FileService {
       if (commandFunction) {
         const onInvalidArgs = () => this.#printMessageInvalidNumberOfArgs(command);
         const params = {
+          output: this.output,
           locationService: this.locationService,
           onInvalidArgs: onInvalidArgs.bind(this),
           onFinish: this.#printResult.bind(this),
@@ -58,9 +62,7 @@ export default class FileService {
   }
 
   #printResult(result) {
-    if (result) {
-      console.log(result);
-    }
+    console.log(result ? `${result}${EOL}` : EOL);
 
     this.#printCurrentLocation();
     this.userInterface.prompt();
