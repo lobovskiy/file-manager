@@ -3,7 +3,7 @@ import { cd } from './commandFunctions/navigation/cd.js';
 import { list } from './commandFunctions/navigation/list.js';
 import { cat } from './commandFunctions/files/cat.js';
 import { add } from './commandFunctions/files/add.js';
-import { rn } from './commandFunctions/files/rename.js';
+import { rn } from './commandFunctions/files/rn.js';
 import { cp } from './commandFunctions/files/cp.js';
 
 
