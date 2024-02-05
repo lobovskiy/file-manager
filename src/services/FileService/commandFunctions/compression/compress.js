@@ -50,15 +50,15 @@ export async function compress(params, ...args) {
     return;
   }
 
-  const readStream = fs.createReadStream(filePath, { encoding: 'utf8' });
-  const writeStream = fs.createWriteStream(newFilePath, { encoding: 'utf8' });
-  const operation = (operationType === 'decompress') ? createBrotliDecompress() : createBrotliCompress();
+  const readStream = fs.createReadStream(filePath);
+  const writeStream = fs.createWriteStream(newFilePath);
+  const brotli = (operationType === 'decompress') ? createBrotliDecompress() : createBrotliCompress();
   const successMessage = (operationType === 'decompress') ? 'File decompressed' : 'File compressed';
   const errorMessage = (operationType === 'decompress')
     ? 'Error while decompressing file'
     : 'Error while compressing file';
 
-  const stream = readStream.pipe(operation).pipe(writeStream);
+  const stream = readStream.pipe(brotli).pipe(writeStream);
 
   stream.on('finish', () => {
     onFinish(successMessage);
