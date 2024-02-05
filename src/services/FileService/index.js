@@ -62,7 +62,7 @@ export default class FileService {
   }
 
   #printResult(result) {
-    console.log(result ? `${result}${EOL}` : EOL);
+    console.log(result ? `${EOL}${result}${EOL}` : EOL);
 
     this.#printCurrentLocation();
     this.userInterface.prompt();
